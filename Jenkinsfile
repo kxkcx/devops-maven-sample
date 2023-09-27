@@ -72,7 +72,7 @@ pipeline {
                     credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
                     variable: 'KUBECONFIG')
                     ]) {
-                    sh 'envsubst < /root/config-sample.yaml | kubectl apply -f - --namespace=s2i'
+                    sh 'envsubst < deploy/dev-all-in-one/devops-sample.yaml | kubectl apply -f -'
                 }
             }
           }
@@ -111,7 +111,7 @@ pipeline {
                     credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
                     variable: 'KUBECONFIG')
                     ]) {
-                    sh 'envsubst < /root/config-sample.yaml | kubectl apply -f - --namespace=s2i'
+                    sh 'envsubst < deploy/prod-all-in-one/devops-sample.yaml | kubectl apply -f -'
                 }
             }
           }
