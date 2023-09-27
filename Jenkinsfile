@@ -15,7 +15,8 @@ pipeline {
         KUBECONFIG_CREDENTIAL_ID = 'demo-kubeconfig'
         REGISTRY = 'docker.io'
         DOCKERHUB_NAMESPACE = 'coderkou'
-        GITHUB_ACCOUNT = 'kubesphere'
+        GITHUB_ACCOUNT = 'kxkcx'
+        GITHUB_EMAIL = '1195794099@qq.com'
         APP_NAME = 'devops-java-sample'
     }
 
@@ -49,7 +50,7 @@ pipeline {
 
         stage('push latest'){
            when{
-             branch 'master'
+             branch 's2i-dev'
            }
            steps{
                 container ('maven') {
@@ -61,7 +62,7 @@ pipeline {
 
         stage('deploy to dev') {
           when{
-            branch 'master'
+            branch 's2i-dev'
           }
           steps {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
@@ -86,8 +87,8 @@ pipeline {
               container ('maven') {
                 input(id: 'release-image-with-tag', message: 'release image with tag?')
                   withCredentials([usernamePassword(credentialsId: "$GITHUB_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    sh 'git config --global user.email "kubesphere@yunify.com" '
-                    sh 'git config --global user.name "kubesphere" '
+                    sh 'git config --global user.email "$GITHUB_EMAIL" '
+                    sh 'git config --global user.name "$GITHUB_ACCOUNT" '
                     sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
                     sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/$GITHUB_ACCOUNT/devops-java-sample.git --tags --ipv4'
                   }
